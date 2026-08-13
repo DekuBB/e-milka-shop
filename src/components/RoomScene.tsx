@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ItemDialog } from "@/components/ItemDialog";
 import { formatPrice, type Item, type Room } from "@/data/rooms";
 
-export function RoomScene({ room }: { room: Room }) {
+export function RoomScene({ room, items }: { room: Room; items: Item[] }) {
   const [active, setActive] = useState<Item | null>(null);
 
   return (
@@ -17,7 +17,7 @@ export function RoomScene({ room }: { room: Room }) {
         />
         <div className="pointer-events-none absolute inset-0 vignette" />
 
-        {room.items.map((item) => (
+        {items.map((item: Item) => (
           <button
             key={item.id}
             type="button"
@@ -40,7 +40,7 @@ export function RoomScene({ room }: { room: Room }) {
       </div>
 
       <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {room.items.map((item) => (
+        {items.map((item: Item) => (
           <li key={item.id}>
             <button
               type="button"
@@ -52,14 +52,14 @@ export function RoomScene({ room }: { room: Room }) {
                   <span className="mr-2">{item.icon}</span>
                   {item.name}
                 </span>
-                {item.isNew && (
+                {item.is_new && (
                   <span className="rounded-sm border border-primary/50 px-1.5 py-0.5 text-[0.6rem] uppercase tracking-[0.15em] text-primary">
                     Nowe
                   </span>
                 )}
               </div>
               <p className="mt-2 text-sm text-muted-foreground">
-                {item.year} · {item.condition}
+                {item.year_label} · {item.condition}
               </p>
               <p className="mt-1 font-display text-lg text-brass">
                 {item.status === "sold" ? "Sprzedane" : formatPrice(item.price)}
@@ -69,7 +69,7 @@ export function RoomScene({ room }: { room: Room }) {
         ))}
       </ul>
 
-      <ItemDialog item={active} roomName={room.name} onClose={() => setActive(null)} />
+      <ItemDialog item={active} onClose={() => setActive(null)} />
     </>
   );
 }
