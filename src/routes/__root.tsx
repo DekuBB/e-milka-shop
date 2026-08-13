@@ -11,6 +11,30 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "@/components/ui/sonner";
+
+function SiteHeader() {
+  return (
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3 text-xs uppercase tracking-[0.2em]">
+        <Link to="/" className="font-display text-base normal-case tracking-normal text-primary">
+          Wirtualny Antykwariat
+        </Link>
+        <div className="flex items-center gap-4 text-muted-foreground">
+          <Link to="/szukaj" className="hover:text-primary">
+            🔍 Szukaj
+          </Link>
+          <Link to="/koszyk" className="hover:text-primary">
+            🛒 Koszyk
+          </Link>
+          <Link to="/konto" className="hover:text-primary">
+            👤 Konto
+          </Link>
+        </div>
+      </nav>
+    </header>
+  );
+}
 
 function NotFoundComponent() {
   return (
@@ -131,8 +155,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <SiteHeader />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Toaster />
     </QueryClientProvider>
   );
 }
