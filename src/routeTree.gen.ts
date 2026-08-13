@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SzukajRouteImport } from './routes/szukaj'
 import { Route as PokojSlugRouteImport } from './routes/pokoj.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SzukajRoute = SzukajRouteImport.update({
+  id: '/szukaj',
+  path: '/szukaj',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PokojSlugRoute = PokojSlugRouteImport.update({
@@ -25,27 +31,31 @@ const PokojSlugRoute = PokojSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/szukaj': typeof SzukajRoute
   '/pokoj/$slug': typeof PokojSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/szukaj': typeof SzukajRoute
   '/pokoj/$slug': typeof PokojSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/szukaj': typeof SzukajRoute
   '/pokoj/$slug': typeof PokojSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pokoj/$slug'
+  fullPaths: '/' | '/szukaj' | '/pokoj/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pokoj/$slug'
-  id: '__root__' | '/' | '/pokoj/$slug'
+  to: '/' | '/szukaj' | '/pokoj/$slug'
+  id: '__root__' | '/' | '/szukaj' | '/pokoj/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SzukajRoute: typeof SzukajRoute
   PokojSlugRoute: typeof PokojSlugRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/szukaj': {
+      id: '/szukaj'
+      path: '/szukaj'
+      fullPath: '/szukaj'
+      preLoaderRoute: typeof SzukajRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pokoj/$slug': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SzukajRoute: SzukajRoute,
   PokojSlugRoute: PokojSlugRoute,
 }
 export const routeTree = rootRouteImport

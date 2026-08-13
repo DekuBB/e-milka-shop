@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import house from "@/assets/house-exterior.jpg";
-import { formatPrice, newItems, rooms } from "@/data/rooms";
+import { formatPrice, roomName, rooms } from "@/data/rooms";
+import { listItems } from "@/lib/catalog.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,10 +19,20 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
+  loader: async () => ({ items: await listItems({ data: {} }) }),
+  errorComponent: ({ error }) => (
+    <main className="mx-auto max-w-xl px-6 py-24 text-center" role="alert">
+      <h1 className="font-display text-3xl">Antykwariat chwilowo zamknięty</h1>
+      <p className="mt-3 text-sm text-muted-foreground">{error.message}</p>
+    </main>
+  ),
+  notFoundComponent: () => <main className="p-24 text-center">Brak treści.</main>,
   component: Index,
 });
 
 function Index() {
+  const { items } = Route.useLoaderData();
+  const newItems = items.filter((item) => item.is_new).slice(0, 8);
   return (
     <main>
       <section className="relative overflow-hidden">
@@ -56,7 +67,7 @@ function Index() {
           <h2 className="font-display text-3xl sm:text-4xl">🏠 Parter</h2>
           <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
             {rooms.length} pomieszczenia ·{" "}
-            {rooms.reduce((n, r) => n + r.items.length, 0)} przedmiotów
+            {items.length} przedmiotów
           </p>
         </header>
 
@@ -88,7 +99,7 @@ function Index() {
                   <p className="mt-1 text-sm text-muted-foreground">{room.tagline}</p>
                 </div>
                 <span className="mt-1 whitespace-nowrap text-xs uppercase tracking-[0.2em] text-primary">
-                  {room.items.length} rzeczy
+                  {items.filter((i) => i.room_slug === room.slug).length} rzeczy
                 </span>
               </div>
             </Link>
@@ -101,17 +112,17 @@ function Index() {
           🏷️ Nowe w antykwariacie
         </h2>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {newItems.map(({ item, room }) => (
+          {newItems.map((item) => (
             <li key={item.id}>
               <Link
                 to="/pokoj/$slug"
-                params={{ slug: room.slug }}
+                params={{ slug: item.room_slug }}
                 className="block h-full rounded-md border border-border/60 bg-card/70 p-5 transition-colors hover:border-primary/60"
               >
                 <span className="text-2xl">{item.icon}</span>
                 <h3 className="mt-3 font-display text-xl leading-tight">{item.name}</h3>
                 <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  {room.icon} {room.name} · {item.year}
+                  {roomName(item.room_slug)} · {item.year_label}
                 </p>
                 <p className="mt-2 font-display text-lg text-brass">{formatPrice(item.price)}</p>
               </Link>
