@@ -14,16 +14,228 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cart_items: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      items: {
+        Row: {
+          category: string
+          condition: string
+          created_at: string
+          description: string
+          dimensions: string
+          icon: string
+          id: string
+          is_new: boolean
+          name: string
+          owner_id: string | null
+          photo_url: string | null
+          price: number | null
+          published: boolean
+          room_slug: string
+          spin_images: string[]
+          status: Database["public"]["Enums"]["item_status"]
+          x: number
+          y: number
+          year_label: string
+        }
+        Insert: {
+          category?: string
+          condition?: string
+          created_at?: string
+          description?: string
+          dimensions?: string
+          icon?: string
+          id: string
+          is_new?: boolean
+          name: string
+          owner_id?: string | null
+          photo_url?: string | null
+          price?: number | null
+          published?: boolean
+          room_slug: string
+          spin_images?: string[]
+          status?: Database["public"]["Enums"]["item_status"]
+          x?: number
+          y?: number
+          year_label?: string
+        }
+        Update: {
+          category?: string
+          condition?: string
+          created_at?: string
+          description?: string
+          dimensions?: string
+          icon?: string
+          id?: string
+          is_new?: boolean
+          name?: string
+          owner_id?: string | null
+          photo_url?: string | null
+          price?: number | null
+          published?: boolean
+          room_slug?: string
+          spin_images?: string[]
+          status?: Database["public"]["Enums"]["item_status"]
+          x?: number
+          y?: number
+          year_label?: string
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          id: string
+          item_id: string
+          name: string
+          order_id: string
+          price: number
+        }
+        Insert: {
+          id?: string
+          item_id: string
+          name: string
+          order_id: string
+          price?: number
+        }
+        Update: {
+          id?: string
+          item_id?: string
+          name?: string
+          order_id?: string
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          address: string | null
+          buyer_name: string | null
+          created_at: string
+          id: string
+          payment_ref: string | null
+          status: string
+          total: number
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          buyer_name?: string | null
+          created_at?: string
+          id?: string
+          payment_ref?: string | null
+          status?: string
+          total?: number
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          buyer_name?: string | null
+          created_at?: string
+          id?: string
+          payment_ref?: string | null
+          status?: string
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "seller" | "customer"
+      item_status: "available" | "reserved" | "sold"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +362,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "seller", "customer"],
+      item_status: ["available", "reserved", "sold"],
+    },
   },
 } as const
