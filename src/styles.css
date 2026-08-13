@@ -19,6 +19,10 @@
  */
 
 @theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -155,7 +159,45 @@
   }
 
   body {
-    background-color: var(--color-background);
+    background: var(--gradient-dusk);
+    background-attachment: fixed;
     color: var(--color-foreground);
+    font-family: var(--font-body);
   }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+}
+
+@utility vignette {
+  background-image: var(--gradient-vignette);
+}
+
+@utility frame-shadow {
+  box-shadow: var(--shadow-frame);
+}
+
+@utility hotspot-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+@keyframes hotspot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.25;
+  }
+}
+
+@utility hotspot-pulse {
+  animation: hotspot-pulse 2.6s ease-in-out infinite;
 }
