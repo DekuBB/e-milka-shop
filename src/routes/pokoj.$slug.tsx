@@ -1,13 +1,26 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { RoomScene } from "@/components/RoomScene";
 import { getRoom, rooms } from "@/data/rooms";
+import { listRoomItems } from "@/lib/catalog.functions";
 
 export const Route = createFileRoute("/pokoj/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const room = getRoom(params.slug);
     if (!room) throw notFound();
-    return { room };
+    const items = await listRoomItems({ data: { slug: params.slug } });
+    return { room, items };
   },
+  errorComponent: ({ error }) => (
+    <main className="mx-auto max-w-xl px-6 py-24 text-center" role="alert">
+      <h1 className="font-display text-3xl">Nie udało się otworzyć pomieszczenia</h1>
+      <p className="mt-3 text-sm text-muted-foreground">{error.message}</p>
+    </main>
+  ),
+  notFoundComponent: () => (
+    <main className="mx-auto max-w-xl px-6 py-24 text-center">
+      <h1 className="font-display text-3xl">Tego pomieszczenia nie ma w domu</h1>
+    </main>
+  ),
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
@@ -29,7 +42,7 @@ export const Route = createFileRoute("/pokoj/$slug")({
 });
 
 function RoomPage() {
-  const { room } = Route.useLoaderData();
+  const { room, items } = Route.useLoaderData();
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
@@ -51,7 +64,7 @@ function RoomPage() {
         </p>
       </header>
 
-      <RoomScene room={room} />
+      <RoomScene room={room} items={items} />
 
       <section className="mt-14 border-t border-border/60 pt-6">
         <h2 className="font-display text-2xl">Przejdź do innego pomieszczenia</h2>
