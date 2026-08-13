@@ -10,7 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as SzukajRouteImport } from './routes/szukaj'
+import { Route as AuthenticatedKasaRouteImport } from './routes/_authenticated/kasa'
+import { Route as AuthenticatedKontoRouteImport } from './routes/_authenticated/konto'
+import { Route as AuthenticatedKoszykRouteImport } from './routes/_authenticated/koszyk'
+import { Route as AuthenticatedWystawRouteImport } from './routes/_authenticated/wystaw'
 import { Route as PokojSlugRouteImport } from './routes/pokoj.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,10 +24,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SzukajRoute = SzukajRouteImport.update({
   id: '/szukaj',
   path: '/szukaj',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedKasaRoute = AuthenticatedKasaRouteImport.update({
+  id: '/kasa',
+  path: '/kasa',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedKontoRoute = AuthenticatedKontoRouteImport.update({
+  id: '/konto',
+  path: '/konto',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedKoszykRoute = AuthenticatedKoszykRouteImport.update({
+  id: '/koszyk',
+  path: '/koszyk',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedWystawRoute = AuthenticatedWystawRouteImport.update({
+  id: '/wystaw',
+  path: '/wystaw',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const PokojSlugRoute = PokojSlugRouteImport.update({
   id: '/pokoj/$slug',
@@ -31,30 +66,74 @@ const PokojSlugRoute = PokojSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/szukaj': typeof SzukajRoute
+  '/kasa': typeof AuthenticatedKasaRoute
+  '/konto': typeof AuthenticatedKontoRoute
+  '/koszyk': typeof AuthenticatedKoszykRoute
+  '/wystaw': typeof AuthenticatedWystawRoute
   '/pokoj/$slug': typeof PokojSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/szukaj': typeof SzukajRoute
+  '/kasa': typeof AuthenticatedKasaRoute
+  '/konto': typeof AuthenticatedKontoRoute
+  '/koszyk': typeof AuthenticatedKoszykRoute
+  '/wystaw': typeof AuthenticatedWystawRoute
   '/pokoj/$slug': typeof PokojSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/szukaj': typeof SzukajRoute
+  '/_authenticated/kasa': typeof AuthenticatedKasaRoute
+  '/_authenticated/konto': typeof AuthenticatedKontoRoute
+  '/_authenticated/koszyk': typeof AuthenticatedKoszykRoute
+  '/_authenticated/wystaw': typeof AuthenticatedWystawRoute
   '/pokoj/$slug': typeof PokojSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/szukaj' | '/pokoj/$slug'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/szukaj'
+    | '/kasa'
+    | '/konto'
+    | '/koszyk'
+    | '/wystaw'
+    | '/pokoj/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/szukaj' | '/pokoj/$slug'
-  id: '__root__' | '/' | '/szukaj' | '/pokoj/$slug'
+  to:
+    | '/'
+    | '/auth'
+    | '/szukaj'
+    | '/kasa'
+    | '/konto'
+    | '/koszyk'
+    | '/wystaw'
+    | '/pokoj/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/szukaj'
+    | '/_authenticated/kasa'
+    | '/_authenticated/konto'
+    | '/_authenticated/koszyk'
+    | '/_authenticated/wystaw'
+    | '/pokoj/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   SzukajRoute: typeof SzukajRoute
   PokojSlugRoute: typeof PokojSlugRoute
 }
@@ -68,12 +147,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/szukaj': {
       id: '/szukaj'
       path: '/szukaj'
       fullPath: '/szukaj'
       preLoaderRoute: typeof SzukajRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/kasa': {
+      id: '/_authenticated/kasa'
+      path: '/kasa'
+      fullPath: '/kasa'
+      preLoaderRoute: typeof AuthenticatedKasaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/konto': {
+      id: '/_authenticated/konto'
+      path: '/konto'
+      fullPath: '/konto'
+      preLoaderRoute: typeof AuthenticatedKontoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/koszyk': {
+      id: '/_authenticated/koszyk'
+      path: '/koszyk'
+      fullPath: '/koszyk'
+      preLoaderRoute: typeof AuthenticatedKoszykRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/wystaw': {
+      id: '/_authenticated/wystaw'
+      path: '/wystaw'
+      fullPath: '/wystaw'
+      preLoaderRoute: typeof AuthenticatedWystawRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/pokoj/$slug': {
       id: '/pokoj/$slug'
@@ -85,8 +206,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedKasaRoute: typeof AuthenticatedKasaRoute
+  AuthenticatedKontoRoute: typeof AuthenticatedKontoRoute
+  AuthenticatedKoszykRoute: typeof AuthenticatedKoszykRoute
+  AuthenticatedWystawRoute: typeof AuthenticatedWystawRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedKasaRoute: AuthenticatedKasaRoute,
+  AuthenticatedKontoRoute: AuthenticatedKontoRoute,
+  AuthenticatedKoszykRoute: AuthenticatedKoszykRoute,
+  AuthenticatedWystawRoute: AuthenticatedWystawRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   SzukajRoute: SzukajRoute,
   PokojSlugRoute: PokojSlugRoute,
 }
