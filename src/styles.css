@@ -19,6 +19,10 @@
  */
 
 @theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -62,39 +66,56 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --radius: 0.25rem;
+  --background: oklch(0.16 0.018 55);
+  --foreground: oklch(0.92 0.026 80);
+  --card: oklch(0.21 0.022 52);
+  --card-foreground: oklch(0.93 0.024 80);
+  --popover: oklch(0.19 0.022 52);
+  --popover-foreground: oklch(0.93 0.024 80);
+  --primary: oklch(0.74 0.13 72);
+  --primary-foreground: oklch(0.18 0.03 50);
+  --secondary: oklch(0.28 0.028 55);
+  --secondary-foreground: oklch(0.92 0.026 80);
+  --muted: oklch(0.25 0.02 55);
+  --muted-foreground: oklch(0.7 0.03 78);
+  --accent: oklch(0.42 0.06 145);
+  --accent-foreground: oklch(0.95 0.02 80);
+  --destructive: oklch(0.52 0.17 28);
+  --destructive-foreground: oklch(0.96 0.01 80);
+  --border: oklch(0.32 0.03 60);
+  --input: oklch(0.3 0.03 60);
+  --ring: oklch(0.74 0.13 72);
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Karla", system-ui, sans-serif;
+  --brass: oklch(0.74 0.13 72);
+  --brass-soft: oklch(0.82 0.09 78);
+  --shadow-frame: 0 30px 60px -20px oklch(0.08 0.02 50 / 0.85);
+  --shadow-glow: 0 0 0 1px oklch(0.74 0.13 72 / 0.5), 0 0 24px oklch(0.74 0.13 72 / 0.35);
+  --gradient-vignette: radial-gradient(
+    ellipse at center,
+    transparent 35%,
+    oklch(0.1 0.02 45 / 0.55) 100%
+  );
+  --gradient-dusk: linear-gradient(
+    180deg,
+    oklch(0.16 0.018 55) 0%,
+    oklch(0.2 0.03 48) 55%,
+    oklch(0.14 0.02 50) 100%
+  );
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar: oklch(0.19 0.022 52);
+  --sidebar-foreground: oklch(0.92 0.026 80);
+  --sidebar-primary: oklch(0.74 0.13 72);
+  --sidebar-primary-foreground: oklch(0.18 0.03 50);
+  --sidebar-accent: oklch(0.28 0.028 55);
+  --sidebar-accent-foreground: oklch(0.92 0.026 80);
+  --sidebar-border: oklch(0.32 0.03 60);
+  --sidebar-ring: oklch(0.74 0.13 72);
 }
 
 .dark {
@@ -138,7 +159,45 @@
   }
 
   body {
-    background-color: var(--color-background);
+    background: var(--gradient-dusk);
+    background-attachment: fixed;
     color: var(--color-foreground);
+    font-family: var(--font-body);
   }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+}
+
+@utility vignette {
+  background-image: var(--gradient-vignette);
+}
+
+@utility frame-shadow {
+  box-shadow: var(--shadow-frame);
+}
+
+@utility hotspot-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+@keyframes hotspot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.25;
+  }
+}
+
+@utility hotspot-pulse {
+  animation: hotspot-pulse 2.6s ease-in-out infinite;
 }
