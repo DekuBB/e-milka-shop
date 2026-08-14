@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as SzukajRouteImport } from './routes/szukaj'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedKasaRouteImport } from './routes/_authenticated/kasa'
 import { Route as AuthenticatedKontoRouteImport } from './routes/_authenticated/konto'
 import { Route as AuthenticatedKoszykRouteImport } from './routes/_authenticated/koszyk'
@@ -37,6 +38,11 @@ const SzukajRoute = SzukajRouteImport.update({
   id: '/szukaj',
   path: '/szukaj',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedKasaRoute = AuthenticatedKasaRouteImport.update({
   id: '/kasa',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/szukaj': typeof SzukajRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/kasa': typeof AuthenticatedKasaRoute
   '/konto': typeof AuthenticatedKontoRoute
   '/koszyk': typeof AuthenticatedKoszykRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/szukaj': typeof SzukajRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/kasa': typeof AuthenticatedKasaRoute
   '/konto': typeof AuthenticatedKontoRoute
   '/koszyk': typeof AuthenticatedKoszykRoute
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/szukaj': typeof SzukajRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/kasa': typeof AuthenticatedKasaRoute
   '/_authenticated/konto': typeof AuthenticatedKontoRoute
   '/_authenticated/koszyk': typeof AuthenticatedKoszykRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/szukaj'
+    | '/admin'
     | '/kasa'
     | '/konto'
     | '/koszyk'
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/szukaj'
+    | '/admin'
     | '/kasa'
     | '/konto'
     | '/koszyk'
@@ -123,6 +134,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/szukaj'
+    | '/_authenticated/admin'
     | '/_authenticated/kasa'
     | '/_authenticated/konto'
     | '/_authenticated/koszyk'
@@ -168,6 +180,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SzukajRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/kasa': {
       id: '/_authenticated/kasa'
       path: '/kasa'
@@ -207,6 +226,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedKasaRoute: typeof AuthenticatedKasaRoute
   AuthenticatedKontoRoute: typeof AuthenticatedKontoRoute
   AuthenticatedKoszykRoute: typeof AuthenticatedKoszykRoute
@@ -214,6 +234,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedKasaRoute: AuthenticatedKasaRoute,
   AuthenticatedKontoRoute: AuthenticatedKontoRoute,
   AuthenticatedKoszykRoute: AuthenticatedKoszykRoute,
