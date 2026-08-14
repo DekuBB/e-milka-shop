@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { getMyListings, getMyOrders } from "@/lib/shop.functions";
+import { getMyRoles } from "@/lib/admin.functions";
 import { formatPrice, roomName, statusLabel } from "@/data/rooms";
 
 export const Route = createFileRoute("/_authenticated/konto")({
@@ -27,14 +28,21 @@ const orderStatus: Record<string, string> = {
 function AccountPage() {
   const fetchOrders = useServerFn(getMyOrders);
   const fetchListings = useServerFn(getMyListings);
+  const fetchRoles = useServerFn(getMyRoles);
   const { data: orders = [] } = useQuery({ queryKey: ["orders"], queryFn: () => fetchOrders({}) });
   const { data: listings = [] } = useQuery({ queryKey: ["listings"], queryFn: () => fetchListings({}) });
+  const { data: roles = [] } = useQuery({ queryKey: ["roles"], queryFn: () => fetchRoles({}) });
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-4xl">👤 Moje konto</h1>
         <div className="flex gap-2">
+          {roles.includes("admin") && (
+            <Button variant="parchment" asChild>
+              <Link to="/admin">🗄️ Panel admina</Link>
+            </Button>
+          )}
           <Button variant="outline" asChild>
             <Link to="/wystaw">📸 Wystaw przedmiot</Link>
           </Button>
