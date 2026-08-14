@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import type { Item } from "@/data/rooms";
+import type { Item, ItemStatus } from "@/data/rooms";
 
 const ITEM_COLUMNS =
   "id, room_slug, name, icon, category, condition, year_label, dimensions, price, description, status, is_new, x, y, photo_url, spin_images, published, created_at";
