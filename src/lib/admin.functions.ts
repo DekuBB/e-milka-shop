@@ -61,8 +61,11 @@ export const adminUpdateItem = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const { id, ...patch } = data;
-    const { error } = await context.supabase.from("items").update(patch).eq("id", id);
+    const patch: { status?: ItemStatus; published?: boolean; is_new?: boolean } = {};
+    if (data.status !== undefined) patch.status = data.status;
+    if (data.published !== undefined) patch.published = data.published;
+    if (data.is_new !== undefined) patch.is_new = data.is_new;
+    const { error } = await context.supabase.from("items").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
