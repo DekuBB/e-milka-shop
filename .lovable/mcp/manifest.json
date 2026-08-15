@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.2",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://yhbgdyojhfzwfgzgfgvm.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "virtual-vintage-emporium",
+      "version": "0.1.0",
+      "title": "Virtual Vintage Emporium"
+    },
+    "tools": [
+      {
+        "name": "list_rooms",
+        "title": "Lista pomieszczeń antykwariatu",
+        "description": "Zwraca wirtualne pomieszczenia sklepu (salon, gabinet, kuchnia, korytarz) wraz z ich identyfikatorami.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "search_items",
+        "title": "Szukaj przedmiotów",
+        "description": "Przeszukuje publiczny katalog antykwariatu po słowach kluczowych, kategorii, pomieszczeniu i dostępności. Sortowanie po cenie lub dacie dodania.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "q": {
+              "description": "Słowa kluczowe, np. 'zegar'.",
+              "type": "string"
+            },
+            "category": {
+              "description": "Kategoria przedmiotu.",
+              "type": "string"
+            },
+            "room": {
+              "description": "Slug pomieszczenia.",
+              "type": "string",
+              "enum": [
+                "salon",
+                "gabinet",
+                "kuchnia",
+                "korytarz"
+              ]
+            },
+            "onlyAvailable": {
+              "description": "Tylko przedmioty dostępne (nie zarezerwowane/sprzedane).",
+              "type": "boolean"
+            },
+            "sort": {
+              "description": "Kolejność wyników.",
+              "type": "string",
+              "enum": [
+                "newest",
+                "price-asc",
+                "price-desc"
+              ]
+            },
+            "limit": {
+              "description": "Maksymalna liczba wyników (domyślnie 20).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_item",
+        "title": "Szczegóły przedmiotu",
+        "description": "Zwraca pełny opis jednego opublikowanego przedmiotu z katalogu na podstawie jego identyfikatora.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Identyfikator przedmiotu."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "my_orders",
+        "title": "Moje zamówienia",
+        "description": "Zwraca zamówienia zalogowanego użytkownika wraz z pozycjami, kwotą i statusem płatności.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "my_listings",
+        "title": "Moje wystawione przedmioty",
+        "description": "Zwraca przedmioty wystawione przez zalogowanego użytkownika wraz ze statusem i publikacją.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
