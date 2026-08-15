@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wirtualny Antykwariat</title>
+    <meta
+      name="description"
+      content="Zwiedzaj stary dom pełen staroci: salon, gabinet, kuchnia i korytarz. Kliknij przedmiot, poznaj jego historię, stan i cenę."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Karla:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="nav container">
+        <a class="brand" href="#top">Wirtualny Antykwariat</a>
+        <div class="nav-links">
+          <a href="#parter">Parter</a>
+          <a href="#nowe">Nowe</a>
+          <a href="#kontakt">Kontakt</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <img src="assets/house-exterior.jpg" alt="Kamienica antykwariatu" />
+        <div class="hero-overlay"></div>
+        <div class="hero-content container">
+          <p class="eyebrow">est. 1904</p>
+          <h1>Wirtualny Antykwariat</h1>
+          <p class="lead">
+            Zamiast zwykłych kafelków z produktami — cały stary dom, pełen historii, detali i
+            unikatowych przedmiotów.
+          </p>
+          <a class="cta" href="#parter">Otwórz drzwi</a>
+        </div>
+      </section>
+
+      <section id="parter" class="container section">
+        <div class="section-head">
+          <h2>🏠 Parter</h2>
+          <p>4 pomieszczenia · 100% klimatu vintage</p>
+        </div>
+        <div id="rooms" class="rooms"></div>
+      </section>
+
+      <section id="nowe" class="container section">
+        <div class="section-head">
+          <h2>🏷️ Nowe w antykwariacie</h2>
+        </div>
+        <div id="products" class="products"></div>
+      </section>
+    </main>
+
+    <footer id="kontakt" class="footer">
+      <div class="container footer-inner">
+        <span>Wirtualny Antykwariat</span>
+        <a href="mailto:kontakt@antykwariat.pl">kontakt@antykwariat.pl</a>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
