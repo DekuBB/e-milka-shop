@@ -7,6 +7,11 @@ import myListings from "./tools/my-listings";
 
 const projectRef = import.meta.env['VITE_SUPABASE_PROJECT_ID'] ?? "project-ref-unset";
 
+// Narzędzia bez `outputSchema` (opcjonalne w SDK) nie przechodzą kontroli
+// `exactOptionalPropertyTypes` w tej wersji typów — zawężamy typ listy.
+type McpTools = Parameters<typeof defineMcp>[0]["tools"];
+const tools = [listRooms, searchItems, getItem, myOrders, myListings] as unknown as McpTools;
+
 export default defineMcp({
   name: "virtual-vintage-emporium",
   title: "Virtual Vintage Emporium",
@@ -17,5 +22,5 @@ export default defineMcp({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
   }),
-  tools: [listRooms, searchItems, getItem, myOrders, myListings],
+  tools,
 });
